@@ -1,0 +1,9 @@
+CC=gcc
+
+CFLAGS=-Wall
+
+SOURCES=eaf.c ead.c ecd.c ecf.c evf.c evd.c
+OBJECTS=$(basename $(SOURCES))
+
+all:
+	$(CC) $(CFLAGS) $(SOURCES) -o $(OBJECTS)
