@@ -30,11 +30,13 @@ void update_coords(float* x, float* y, float* z, float* vx, float* vy, float* vz
   uint64_t i = 0;
   //printf("X: %f \n Y: %f \n Z: %f\n VX: %f \n VY: %f \n VZ: %f\n\n\n", x[1],y[1],z[1],vx[1],vy[1],vz[1]);
 
-  //Loop through each of the three array pairs at float time (loading 2 floats into vector registers) 
-  //until array is exhausted or there is one element left, at which time we update it and exit.
+  //Loop through each of the three array pairs (x and vx, y and vy, ...) at quadruple time (loading 4 floats into vector registers) 
+  //until array is exhausted or there is less than 4 elements left, at which time we loop by one until done and exit.
+  //If the size is a multiple of 4 then we jump to another label for he last 4 floats to avoid incrementing counters and pointers. 
   asm volatile("movq %7, %%rax\n\t"
 	       "subq $4, %%rax\n\t"
-	       "loop_double_time:\n\t"
+
+	       "loop_quad_time:\n\t"
 	       "movups (%4), %%xmm0\n\t"
 	       "movups (%0), %%xmm1\n\t"
 	       "addps %%xmm0, %%xmm1\n\t"
@@ -55,10 +57,9 @@ void update_coords(float* x, float* y, float* z, float* vx, float* vy, float* vz
 	       "addq $16, %2\n\t"
 	       "addq $4, %3\n\t"
 	       "cmp %3, %%rax\n\t"
-	       "jl loop_one_at_a_time\n\t"
-	       "cmp %3, %7\n\t"
-	       "jg loop_double_time\n\t"
-	       "je loop_end\n\t"
+	       "jg loop_quad_time\n\t"
+	       "je loop_last_time\n\t"
+
 	       "loop_one_at_a_time:\n\t"
 	       "movss (%4), %%xmm0\n\t"
 	       "movss (%0), %%xmm1\n\t"
@@ -72,6 +73,24 @@ void update_coords(float* x, float* y, float* z, float* vx, float* vy, float* vz
 	       "movss (%2), %%xmm1\n\t"
 	       "addss %%xmm0, %%xmm1\n\t"
 	       "movss %%xmm1, (%2)\n\t"
+	       "cmp %3, %7\n\t"
+	       "jl loop_one_at_a_time\n\t"
+	       "je loop_end\n\t"
+
+	       "loop_last_time:\n\t"
+	       "movups (%4), %%xmm0\n\t"
+	       "movups (%0), %%xmm1\n\t"
+	       "addps %%xmm0, %%xmm1\n\t"
+	       "movups %%xmm1, (%0)\n\t"
+	       "movups (%5), %%xmm0\n\t"
+	       "movups (%1), %%xmm1\n\t"
+	       "addps %%xmm0, %%xmm1\n\t"
+	       "movups %%xmm1, (%1)\n\t"
+	       "movups (%6), %%xmm0\n\t"
+	       "movups (%2), %%xmm1\n\t"
+	       "addps %%xmm0, %%xmm1\n\t"
+	       "movups %%xmm1, (%2)\n\t"
+	       
 	       "loop_end:\n\t"
 	       :"+r" (x), "+r" (y), "+r" (z)
 	       :"r" (i), "r" (vx), "r" (vy), "r" (vz), "r" (size)
