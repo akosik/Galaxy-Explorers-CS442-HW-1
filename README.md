@@ -1,10 +1,11 @@
 # Galaxy Explorers
 ### Erik and Alec 
 
-(Disclaimer:
+File Decoder: Every File Contains 3 letters E for explorer, A-C-V for assembly-c-vectorized, and D-F for double-float.
+(Disclaimer: All times are in nanoseconds.)
 #### Part 1
 ##### A.
-We picked 10,000 I (where I stands for iterations) for 2^8 to 2^11, 1000 I for 2^11 to 2^15, 200I for 2^16 to 2^19, then 20 for 2^19 to 2^24. We picked these iterations because as the size of objects increases, the dataset will get bigger, so finding an accurate mean time per coordinate would require less iterations.  
+We picked 10,000 I (where I stands for iterations) for 2^8 to 2^11, 1000 I for 2^11 to 2^15, 200I for 2^16 to 2^19, then 20 for 2^19 to 2^24. We picked these iterations because as the size of the objects increases, the dataset will get bigger, so finding an accurate mean time per coordinate would require less iterations.  
 
 
 ##### B.
@@ -41,7 +42,7 @@ The float C function had about a 1 second advantage throughout all input sizes
 
 ![alt tag] (https://github.com/akosik/Galaxy-Explorers-CS442-HW-1/blob/master/EVF.gif "Vector Graph")
 
-For the vectorized assembly code, our program ran significantly faster than the regular assembly code until we got to inputs of size 2^19 and above, where the vertorized assembly still kept a small performance advantage. When looking at the double and float for the vectorized assembly code, we found that the float was faster than double.
+For the vectorized assembly code, our program ran significantly faster than the regular assembly code until we got to inputs of size 2^19 and above, where the vectorized assembly still kept a small performance advantage. When looking at the double and float for the vectorized assembly code, we found that the float was faster than double by about 2x, as expected, since we can add twice as many floats at a time in the vector registers.
 
 
 
