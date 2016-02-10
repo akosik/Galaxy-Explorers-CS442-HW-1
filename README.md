@@ -39,7 +39,7 @@ The float C function had about a 1 second advantage throughout all input sizes
 
 
 ### Part 5
-
+We measured memory usage of each program by looking at the resident set size of each process.  Assembly and C had almost exactly the same memory usage (1,400-2,700KB for 2^8-2^16), with slight deviations at object sizes of 2^20 (~400,000KB still within 100KB of each other).  Python, on the other hand, started out at 9 times the size of the others (9200KB at 2^8) and worked up to about an order of magnitude larger than C or Assembly (3,000,000KB).  We used the `command time -v` command to measure the resident set size of the C and Assembly programs while using getrusage from the resource library to check Python.
 
 ### Part 6
 
