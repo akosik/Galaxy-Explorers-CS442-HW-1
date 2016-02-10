@@ -1,7 +1,7 @@
 # Galaxy Explorers
 ### Erik and Alec 
 
-File Decoder: Every File Contains 3 letters E for explorer, A-C-V for assembly-c-vectorized, and D-F for double-float.
+**File Decoder: Every File Contains 3 letters E for explorer, A-C-V for assembly-c-vectorized, and D-F for double-float.**
 (Disclaimer: All times are in nanoseconds.)
 #### Part 1
 ##### A.
