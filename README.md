@@ -2,6 +2,7 @@
 ### Erik and Alec 
 
 **File Decoder: Every File Contains 3 letters E for explorer, A-C-V for assembly-c-vectorized, and D-F for double-float.**
+
 (Disclaimer: All times are in nanoseconds.)
 #### Part 1
 ##### A.
@@ -21,6 +22,7 @@ We ran input sizes of base 2 a total of ten times then found the mean of those t
 
 
 We were able to run more iterations for the C code than for Python because the C code was much faster.
+
 (Disclaimer: To look at the graphs separately, look at ECF.gif and Python.gif in folder)
 
 
@@ -32,6 +34,7 @@ The float C function had about a 1 second advantage throughout all input sizes
 
 ### Part 4
 ![alt tag] (https://github.com/akosik/Galaxy-Explorers-CS442-HW-1/blob/master/Python%2BC%2Bassembly.gif "Python, C and Assembly Graph")
+
 (Disclaimer: To look at the assembly graph separately, look at EAF.gif)
 
 
