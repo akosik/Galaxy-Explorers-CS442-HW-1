@@ -1,5 +1,6 @@
 //Galaxy Explorers
 //Homework 1
+//C Float
 
 #include <stdlib.h>
 #include <time.h>
@@ -28,7 +29,6 @@ float* generate_random_list(uint64_t size, float bound)
 void update_coords(float* x, float* y, float* z, float* vx, float* vy, float* vz, uint64_t size)
 {
   uint64_t i;
-  //printf("X: %f \n Y: %f \n Z: %f\n VX: %f \n VY: %f \n VZ: %f\n\n\n", x[1],y[1],z[1],vx[1],vy[1],vz[1]);
   for(i = 0; i < size; i++)
     {
       x[i] = x[i] + vx[i];

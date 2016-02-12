@@ -1,6 +1,6 @@
 //Galaxy Explorers
 //Homework 1
-//Assembly
+//Assembly Double
 
 #include <stdlib.h>
 #include <time.h>
@@ -30,8 +30,8 @@ void update_coords(double* x, double* y, double* z, double* vx, double* vy, doub
 {
   uint64_t i = 0;
 
-  //printf("X: %f \n Y: %f \n Z: %f\n VX: %f \n VY: %f \n VZ: %f\n\n\n", x[1],y[1],z[1],vx[1],vy[1],vz[1]);
-
+  //We don't need output values, all changes are made to data either in the heap or in values not used
+  //after we exit the loop
   asm volatile("loop:\n\t"
 	       "movsd (%4,%3,8), %%xmm0\n\t"
 	       "movsd (%0,%3,8), %%xmm1\n\t"
@@ -48,8 +48,8 @@ void update_coords(double* x, double* y, double* z, double* vx, double* vy, doub
 	       "incq %3\n\t"
 	       "cmpq %3, %7\n\t"
 	       "jg loop"
-	       :"+r" (x), "+r" (y), "+r" (z), "+r" (i)
-	       :"r" (vx), "r" (vy), "r" (vz), "r" (size)
+	       :
+	       :"r" (x), "r" (y), "r" (z), "r" (i), "r" (vx), "r" (vy), "r" (vz), "r" (size)
 	       :"memory", "cc"
 	       );
 }

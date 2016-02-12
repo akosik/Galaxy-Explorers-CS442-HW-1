@@ -1,5 +1,6 @@
 //Galaxy Explorers
 //Homework 1
+//Vectorized Float
 
 #include <stdlib.h>
 #include <time.h>
@@ -28,11 +29,13 @@ float* generate_random_list(uint64_t size, float bound)
 void update_coords(float* x, float* y, float* z, float* vx, float* vy, float* vz, uint64_t size)
 {
   uint64_t i = 0;
-  //printf("X: %f \n Y: %f \n Z: %f\n VX: %f \n VY: %f \n VZ: %f\n\n\n", x[1],y[1],z[1],vx[1],vy[1],vz[1]);
 
   //Loop through each of the three array pairs (x and vx, y and vy, ...) at quadruple time (loading 4 floats into vector registers) 
   //until array is exhausted or there is less than 4 elements left, at which time we loop by one until done and exit.
   //If the size is a multiple of 4 then we jump to another label for he last 4 floats to avoid incrementing counters and pointers. 
+
+  //We don't need output values, all changes are made to data either in the heap or in values not used
+  //after we exit the loop
   asm volatile("movq %7, %%rax\n\t"
 	       "subq $4, %%rax\n\t"
 
@@ -92,8 +95,8 @@ void update_coords(float* x, float* y, float* z, float* vx, float* vy, float* vz
 	       "movups %%xmm1, (%2)\n\t"
 	       
 	       "loop_end:\n\t"
-	       :"+r" (x), "+r" (y), "+r" (z)
-	       :"r" (i), "r" (vx), "r" (vy), "r" (vz), "r" (size)
+	       :
+	       :"r" (x), "r" (y), "r" (z), "r" (i), "r" (vx), "r" (vy), "r" (vz), "r" (size)
 	       :"xmm0", "xmm1", "memory", "cc", "rax"
 	       );
 }

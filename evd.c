@@ -1,5 +1,6 @@
 //Galaxy Explorers
 //Homework 1
+//Vectorized Double
 
 #include <stdlib.h>
 #include <time.h>
@@ -28,10 +29,12 @@ double* generate_random_list(uint64_t size, double bound)
 void update_coords(double* x, double* y, double* z, double* vx, double* vy, double* vz, uint64_t size)
 {
   uint64_t i = 0;
-  //printf("X: %f \n Y: %f \n Z: %f\n VX: %f \n VY: %f \n VZ: %f\n\n\n", x[1],y[1],z[1],vx[1],vy[1],vz[1]);
 
   //Loop through each of the three array pairs at double time (loading 2 doubles into vector registers) 
   //until array is exhausted or there is one element left, at which time we update it and exit.
+
+  //We don't need output values, all changes are made to data either in the heap or in values not used
+  //after we exit the loop
   asm volatile("movq %7, %%rax\n\t"
 	       "subq $1, %%rax\n\t"
 	       "loop_double_time:\n\t"
@@ -73,8 +76,8 @@ void update_coords(double* x, double* y, double* z, double* vx, double* vy, doub
 	       "addsd %%xmm0, %%xmm1\n\t"
 	       "movsd %%xmm1, (%2)\n\t"
 	       "loop_end:\n\t"
-	       :"+r" (x), "+r" (y), "+r" (z)
-	       :"r" (i), "r" (vx), "r" (vy), "r" (vz), "r" (size)
+	       :
+	       :"r" (x), "r" (y), "r" (z), "r" (i), "r" (vx), "r" (vy), "r" (vz), "r" (size)
 	       :"xmm0", "xmm1", "memory", "cc", "rax"
 	       );
 }
